@@ -1,5 +1,8 @@
 from datetime import datetime, timedelta
 
+archivo_personal = "personal.txt"
+archivo_horarios = "horario.txt"
+
 def cargar_personal(archivo):
     personal = []
     with open(archivo, "r") as archivo:
@@ -47,18 +50,13 @@ def interpretar_salida(salida, entrada):
     else:
         return formatear_hora(salida)
 
-def limpiar_archivo(archivo):
-    with open(archivo, "w") as archivo:
-        pass
-
 def registrar_horario_por_categoria(categoria, personal):
     personal_categoria = [p for p in personal if p[2].lower() == categoria.lower()]
     if not personal_categoria:
         print(f"No se encontró personal en la categoría '{categoria}'.")
         return
-    
-    horarios_completos = []
-    with open("horario.txt", "a") as archivo:
+
+    while True:
         for persona in personal_categoria:
             apellidos, nombres, cargo = persona
             if (apellidos, nombres) in horarios_existentes:
@@ -86,8 +84,10 @@ def registrar_horario_por_categoria(categoria, personal):
                         print("No se puede retroceder más.")
                         continue
                 elif entrada.lower() == "//":
-                    print("Reiniciando desde el lunes.")
-                    return
+                    print("Reiniciando desde el lunes para la misma persona.")
+                    dia_index = 0  # Reiniciar el índice del día para empezar desde el lunes
+                    horario = [apellidos, nombres, cargo]
+                    continue
                 elif entrada.lower() == "..":
                     print("Volviendo al menú principal.")
                     completo = False
@@ -116,28 +116,31 @@ def registrar_horario_por_categoria(categoria, personal):
                 dia_index += 1
             
             if completo:
-                horarios_completos.append(horario)
+                with open(archivo_horarios, "a") as archivo:
+                    linea = ",".join(horario) + "\n"
+                    archivo.write(linea)
                 print(f"Horario registrado para {nombres} {apellidos}.")
             else:
                 print(f"El horario para {nombres} {apellidos} no se completó. No se guardará.")
                 break
-        
-        for h in horarios_completos:
-            linea = ",".join(h) + "\n"
-            archivo.write(linea)
+        else:
+            break
 
 def registrar_horario_manualmente(personal):
     while True:
         apellido = input("Ingrese el apellido de la persona a registrar (o 'x' para regresar): ").strip()
         if apellido.lower() == 'x':
             return
+        
         encontrado = False
         for persona in personal:
             apellidos, nombres, cargo = persona
             if apellidos.lower() == apellido.lower():
                 if (apellidos, nombres) in horarios_existentes:
-                    print(f"{nombres} {apellidos} ya tiene horario registrado. Saltando.")
-                    return
+                    print(f"{nombres} {apellidos} ya tiene horario registrado. ¿Desea editarlo? (s/n): ", end="")
+                    respuesta = input().strip().lower()
+                    if respuesta != 's':
+                        return
                 
                 horario = [apellidos, nombres, cargo]
                 jornada_duracion = None
@@ -160,8 +163,10 @@ def registrar_horario_manualmente(personal):
                             print("No se puede retroceder más.")
                             continue
                     elif entrada.lower() == "//":
-                        print("Reiniciando desde el lunes.")
-                        return
+                        print("Reiniciando desde el lunes para la misma persona.")
+                        dia_index = 0  # Reiniciar el índice del día para empezar desde el lunes
+                        horario = [apellidos, nombres, cargo]
+                        continue
                     elif entrada.lower() == "..":
                         print("Volviendo al menú principal.")
                         completo = False
@@ -190,7 +195,7 @@ def registrar_horario_manualmente(personal):
                     dia_index += 1
                 
                 if completo:
-                    with open("horario.txt", "a") as archivo:
+                    with open(archivo_horarios, "a") as archivo:
                         linea = ",".join(horario) + "\n"
                         archivo.write(linea)
                     print(f"Horario registrado para {nombres} {apellidos}.")
@@ -203,11 +208,8 @@ def registrar_horario_manualmente(personal):
             print("No se encontró ninguna persona con ese apellido. Intente de nuevo.")
 
 def main():
-    archivo_personal = "personal.txt"
-    archivo_horarios = "horario.txt"
-    
-    personal = cargar_personal(archivo_personal)
     global horarios_existentes
+    personal = cargar_personal(archivo_personal)
     horarios_existentes = cargar_horarios(archivo_horarios)
 
     while True:
@@ -216,12 +218,10 @@ def main():
         print("2. Representante de Servicio")
         print("3. Cajer@")
         print("4. Ecommerce")
-        print("5. Registrar Manualmente (Falta Implementar Correctamente)")
-        print("6. Limpiar el archivo de horarios")
-        print("0. Salir")
-        
-        opcion = input("Ingrese el número de la opción deseada: ")
-        
+        print("5. Ingreso manual")
+        print("6. Salir")
+        opcion = input("Opción: ").strip()
+
         if opcion == "1":
             registrar_horario_por_categoria("Asistente de Self Checkout", personal)
         elif opcion == "2":
@@ -233,13 +233,10 @@ def main():
         elif opcion == "5":
             registrar_horario_manualmente(personal)
         elif opcion == "6":
-            limpiar_archivo(archivo_horarios)
-            print("Archivo de horarios limpiado.")
-        elif opcion == "0":
-            print("Saliendo del programa.")
+            print("Saliendo...")
             break
         else:
-            print("Opción no válida.")
+            print("Opción no válida. Intente de nuevo.")
 
 if __name__ == "__main__":
     main()
