@@ -32,9 +32,9 @@ def menu():
         elif choice == '4':
             run_script('EntradasSalidasV3.py')
         elif choice == '5':
-            run_script('ExportarWhatsapp.py')
+            run_script('ExportarWhatsappV1.py')
         elif choice == '6':
-            run_script('newGraficV2.py')
+            run_script('newGraficV3.py')
         elif choice == '11':
             run_script('Tools.py')
         elif choice == '0':
