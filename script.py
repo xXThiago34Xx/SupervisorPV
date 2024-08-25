@@ -10,7 +10,7 @@ def clear_screen():
 
 def menu():
     while True:
-        clear_screen()
+        clear_screen()  # Clear the screen before displaying the menu
         print("Selecciona una opción:")
         print("1. Registrar Personal")
         print("2. Limpiar Horario")
@@ -45,12 +45,14 @@ def menu():
             input("Presiona Enter para continuar...")
 
 def run_script(script_name):
+    clear_screen()  # Clear the screen before running the script
     if os.path.exists(script_name):
         print(f"Ejecutando {script_name}...")
         os.system(f'python {script_name}')
     else:
         print(f"El archivo {script_name} no se encuentra.")
-        input("Presiona Enter para continuar...")
+    input("Presiona Enter para continuar...")  # Wait for user input before returning to the menu
+    clear_screen()  # Clear the screen before displaying the menu again
 
 if __name__ == "__main__":
     menu()
