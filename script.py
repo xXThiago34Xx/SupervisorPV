@@ -24,13 +24,13 @@ def menu():
         choice = input("Ingresa el número de tu elección: ")
         
         if choice == '1':
-            run_script('registrarPersonal.py')
+            run_script('registrarPersonalV1.py')
         elif choice == '2':
             run_script('limpiarHorario.py')
         elif choice == '3':
-            run_script('registrarHorarioV5.py')
+            run_script('registrarHorarioV6.py')
         elif choice == '4':
-            run_script('EntradasSalidasV2.py')
+            run_script('EntradasSalidasV3.py')
         elif choice == '5':
             run_script('ExportarWhatsapp.py')
         elif choice == '6':
