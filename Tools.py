@@ -19,7 +19,7 @@ def menu():
         choice = input("Ingresa el número de tu elección: ")
         
         if choice == '1':
-            run_script('cuentas.py')
+            run_script('cuentasV1.py')
         elif choice == '2':
             run_script('EAN.py')
         elif choice == '3':
