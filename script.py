@@ -18,6 +18,7 @@ def menu():
         print("4. Entradas y Salidas")
         print("5. Exportar WhatsApp")
         print("6. Exportar Gráfico")
+        print("7. Exportar Excel Semanal")
         print("11. Tools")
         print("0. Salir")
         
@@ -35,6 +36,8 @@ def menu():
             run_script('ExportarWhatsappV1.py')
         elif choice == '6':
             run_script('newGraficV3.py')
+        elif choice == '7':
+            run_script('GenerarHojasSemana.py')
         elif choice == '11':
             run_script('Tools.py')
         elif choice == '0':

@@ -65,7 +65,7 @@ def generar_intervalos():
     return intervalos
 
 def crear_hoja(ws, intervalos, horarios_dia, tipo_personal):
-    encabezados = ["Intervalos"] + [f"{nombres} {apellidos}" for nombres, apellidos in horarios_dia.keys()] + ["# de Personal"]
+    encabezados = ["Intervalos"] + [f"{nombres} {apellidos}" for nombres, apellidos in horarios_dia.keys()] + ["#"]
     ws.append(encabezados)
     
     for i, intervalo in enumerate(intervalos, start=2):

@@ -1,54 +1,54 @@
 import os
-import win32com.client as win32
-import pandas as pd
+from openpyxl import load_workbook
+from reportlab.lib.pagesizes import A4, landscape
+from reportlab.lib.units import inch
+from reportlab.pdfgen import canvas
+from PIL import Image
+import excel2img
 
-def configurar_hoja_para_pdf(sheet, orientacion='Vertical'):
-    # Configurar márgenes y ajustar todo a una página
-    sheet.PageSetup.Zoom = False
-    sheet.PageSetup.FitToPagesWide = 1
-    sheet.PageSetup.FitToPagesTall = 1
-    
-    # Configurar orientación de la página
-    if orientacion.lower() == 'horizontal':
-        sheet.PageSetup.Orientation = 2  # xlLandscape
+def capturar_hoja_como_imagen(hoja, archivo_imagen):
+    excel2img.export_img(hoja, archivo_imagen)
+
+def exportar_imagen_a_pdf(imagen_path, pdf_path, orientacion='portrait'):
+    img = Image.open(imagen_path)
+    c = canvas.Canvas(pdf_path, pagesize=A4 if orientacion == 'portrait' else landscape(A4))
+    width, height = (A4 if orientacion == 'portrait' else landscape(A4))
+    img_width, img_height = img.size
+    # Ajustar la imagen al tamaño de la página
+    img_ratio = img_width / img_height
+    page_ratio = width / height
+    if img_ratio > page_ratio:
+        new_width = width
+        new_height = width / img_ratio
     else:
-        sheet.PageSetup.Orientation = 1  # xlPortrait
-    
-    # Configurar centrado
-    sheet.PageSetup.CenterHorizontally = True
-    sheet.PageSetup.CenterVertically = True
-    
-    # Configurar todos los bordes en la selección
-    sheet.UsedRange.Borders.Weight = 2  # xlThin
-    
-    # Configurar área de impresión para incluir la selección actual
-    sheet.PageSetup.PrintArea = sheet.UsedRange.Address
-
-def exportar_hoja_como_pdf(excel, sheet, output_dir, filename, orientacion='Vertical'):
-    configurar_hoja_para_pdf(sheet, orientacion)
-    pdf_path = os.path.join(output_dir, filename)
-    sheet.ExportAsFixedFormat(0, pdf_path)  # xlTypePDF = 0
+        new_height = height
+        new_width = height * img_ratio
+    x = (width - new_width) / 2
+    y = (height - new_height) / 2
+    c.drawImage(imagen_path, x, y, new_width, new_height)
+    c.showPage()
+    c.save()
 
 def procesar_excel_y_exportar_pdf(input_file, output_dir):
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
-    excel = win32.Dispatch('Excel.Application')
-    excel.Visible = False
-    workbook = excel.Workbooks.Open(input_file)
+    wb = load_workbook(input_file)
+    for sheet_name in wb.sheetnames:
+        orientacion = 'landscape' if 'cajer@' in sheet_name.lower() else 'portrait'
+        imagen_filename = f"{sheet_name}.png"
+        imagen_path = os.path.join(output_dir, imagen_filename)
+        pdf_filename = f"{sheet_name}.pdf"
+        pdf_path = os.path.join(output_dir, pdf_filename)
 
-    for sheet in workbook.Sheets:
-        nombre_hoja = sheet.Name.lower()
-        orientacion = 'Horizontal' if 'cajer@' in nombre_hoja else 'Vertical'
-        pdf_filename = f"{sheet.Name}.pdf"
-        exportar_hoja_como_pdf(excel, sheet, output_dir, pdf_filename, orientacion)
-    
-    workbook.Close(SaveChanges=False)
-    excel.Quit()
+        # Exportar hoja como imagen
+        capturar_hoja_como_imagen(input_file, imagen_path)
+
+        # Exportar imagen a PDF
+        exportar_imagen_a_pdf(imagen_path, pdf_path, orientacion)
 
 def unir_pdfs(pdf_files, output_pdf):
     from PyPDF2 import PdfMerger
-    
     merger = PdfMerger()
     for pdf in pdf_files:
         merger.append(pdf)
