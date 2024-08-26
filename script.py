@@ -30,7 +30,7 @@ def menu():
         elif choice == '3':
             run_script('registrarHorarioV6.py')
         elif choice == '4':
-            run_script('EntradasSalidasV3.py')
+            run_script('EntradasSalidasV4.py')
         elif choice == '5':
             run_script('ExportarWhatsappV1.py')
         elif choice == '6':
