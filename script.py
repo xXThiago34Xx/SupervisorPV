@@ -35,9 +35,9 @@ def menu():
         elif choice == '5':
             run_script('ExportarWhatsappV1.py')
         elif choice == '6':
-            run_script('newGraficV3.py')
+            run_script('newGraficV5.py')
         elif choice == '7':
-            run_script('GenerarHojasSemana.py')
+            run_script('GenerarHojasSemanaV1.py')
         elif choice == '11':
             run_script('Tools.py')
         elif choice == '0':
