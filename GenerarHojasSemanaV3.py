@@ -9,7 +9,7 @@ import os
 # Diccionario para asociar colores con tipos de personal
 COLORES_PERSONAL = {
     "Self Checkout": "FFFF00",    # Amarillo
-    "Representante de Servicio": "ADD8E6",     # Azul Claro
+    "RS": "ADD8E6",     # Azul Claro
     "Cajer@": "FF0000",                        # Rojo
     "Ecommerce": "EE82EE",                     # Violeta
     "Supervisor(@)": "90EE90"                  # Verde Claro
@@ -110,7 +110,7 @@ def crear_hoja(ws, intervalos, horarios_dia, tipo_personal, dia):
 
 def generar_hojas_para_toda_la_semana(horarios):
     dias_semana = ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"]
-    tipos_personal = ["Self Checkout", "Representante de Servicio", "Cajer@", "Ecommerce", "Supervisor(@)"]
+    tipos_personal = ["Self Checkout", "RS", "Cajer@", "Ecommerce", "Supervisor(@)"]
 
     intervalos = generar_intervalos()
     wb = openpyxl.Workbook()

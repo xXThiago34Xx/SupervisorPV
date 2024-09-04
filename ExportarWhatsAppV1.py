@@ -77,7 +77,7 @@ def generar_mensaje(horarios_dia):
 
 def procesar_opcion(opcion, horarios):
     dia_mapping = ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"]
-    tipos_personal = ["Self Checkout", "Representante de Servicio", "Cajer@", "Ecommerce", "Supervisor(@)"]
+    tipos_personal = ["Self Checkout", "RS", "Cajer@", "Ecommerce", "Supervisor(@)"]
     
     if opcion == 6:
         print("\nSeleccionar Día:")
@@ -127,7 +127,7 @@ def main():
     while True:
         print("\nExportar a WhatsApp De:")
         print("1. Self Checkout")
-        print("2. Representante de Servicio")
+        print("2. RS")
         print("3. Cajer@")
         print("4. Ecommerce")
         print("5. Supervisor(@)")
