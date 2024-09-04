@@ -37,7 +37,7 @@ def menu():
         elif choice == '6':
             run_script('newGraficV6.py')
         elif choice == '7':
-            run_script('GenerarHojasSemanaV1.py')
+            run_script('GenerarHojasSemanaV3.py')
         elif choice == '11':
             run_script('Tools.py')
         elif choice == '0':
