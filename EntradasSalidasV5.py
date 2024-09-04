@@ -164,7 +164,7 @@ def main():
     horarios = cargar_horarios(archivo_horarios)
     
     dias = ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"]
-    tipos_personal = ["Asistente de Self Checkout", "Representante de Servicio", "Cajer@", "Ecommerce", "Supervisor(@)"]  # Añadida la nueva categoría
+    tipos_personal = ["Self Checkout", "Representante de Servicio", "Cajer@", "Ecommerce", "Supervisor(@)"]  # Añadida la nueva categoría
     
     while True:
         print("\nSeleccionar Día:")

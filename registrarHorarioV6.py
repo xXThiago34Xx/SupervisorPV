@@ -214,7 +214,7 @@ def main():
 
     while True:
         print("\nSeleccione el tipo de personal para ingresar horarios:")
-        print("1. Asistente de Self Checkout")
+        print("1. Self Checkout")
         print("2. Representante de Servicio")
         print("3. Cajer@")
         print("4. Ecommerce")
@@ -225,7 +225,7 @@ def main():
         opcion = input("Ingrese el número de la opción deseada: ").strip()
 
         if opcion == '1':
-            registrar_horario_por_categoria("Asistente de Self Checkout", personal)
+            registrar_horario_por_categoria("Self Checkout", personal)
         elif opcion == '2':
             registrar_horario_por_categoria("Representante de Servicio", personal)
         elif opcion == '3':

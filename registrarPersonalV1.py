@@ -1,7 +1,7 @@
 def agregar_empleado():
     cargos = {
         "1": "Cajer@",
-        "2": "Asistente de Self Checkout",
+        "2": "Self Checkout",
         "3": "Representante de Servicio",
         "4": "Ecommerce",
         "5": "Supervisor(@)"  # Nueva opción añadida
@@ -11,7 +11,7 @@ def agregar_empleado():
         # Mostrar las opciones de tipo de personal
         print("Seleccione el tipo de personal que desea ingresar de forma masiva:")
         print("1. Cajer@")
-        print("2. Asistente de Self Checkout")
+        print("2. Self Checkout")
         print("3. Representante de Servicio")
         print("4. Ecommerce")
         print("5. Supervisor(@)")  # Nueva opción añadida

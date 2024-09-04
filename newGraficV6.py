@@ -7,7 +7,7 @@ import os
 
 # Diccionario para asociar colores con tipos de personal
 COLORES_PERSONAL = {
-    "Asistente de Self Checkout": "FFFF00",    # Amarillo
+    "Self Checkout": "FFFF00",    # Amarillo
     "Representante de Servicio": "ADD8E6",     # Azul Claro
     "Cajer@": "FF0000",                        # Rojo
     "Ecommerce": "EE82EE",                     # Violeta
@@ -104,7 +104,7 @@ def generar_excel(horarios, dia, tipo_personal):
     wb = openpyxl.Workbook()
     
     if tipo_personal == "Todos":
-        tipos_personal = ["Asistente de Self Checkout", "Representante de Servicio", "Cajer@", "Ecommerce", "Supervisor(@)"]
+        tipos_personal = ["Self Checkout", "Representante de Servicio", "Cajer@", "Ecommerce", "Supervisor(@)"]
         for tipo in tipos_personal:
             ws = wb.create_sheet(title=tipo)
             horarios_dia = obtener_horarios_por_dia(horarios, dia, tipo)
@@ -131,7 +131,7 @@ def main():
     dia = dias_semana[dia_opcion]
     
     print("\nSeleccionar Tipo de Personal:")
-    tipos_personal = ["Asistente de Self Checkout", "Representante de Servicio", "Cajer@", "Ecommerce", "Supervisor(@)", "Todos"]
+    tipos_personal = ["Self Checkout", "Representante de Servicio", "Cajer@", "Ecommerce", "Supervisor(@)", "Todos"]
     for i, tipo in enumerate(tipos_personal, 1):
         print(f"{i}. {tipo}")
     tipo_opcion = int(input("Ingrese el número de opción: ")) - 1
