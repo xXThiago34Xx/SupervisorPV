@@ -1,2 +1,7 @@
+
+corregir carpeta dias
 Centrar Horizontalmente y Verticalmente las hojas
 Ajustar el ancho de las paginas de self y ecommerce
+
+Reglas:
+Si un RS figura como apoyo en cajas ponerle descanso en el horario de RS
