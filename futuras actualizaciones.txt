@@ -1,0 +1,2 @@
+Centrar Horizontalmente y Verticalmente las hojas
+Ajustar el ancho de las paginas de self y ecommerce

@@ -16,7 +16,7 @@ def save_sheet_as_pdf(sheet, output_dir, pdf_filename):
     sheet.PageSetup.PaperSize = 9  # Tamaño A4
     sheet.PageSetup.Zoom = False  # Desactiva el ajuste por zoom
     sheet.PageSetup.FitToPagesWide = 1  # Ajusta a una página de ancho
-    sheet.PageSetup.FitToPagesTall = 1  # SI ajustar a altura de página // YO
+    sheet.PageSetup.FitToPagesTall = 1  # Ajustar a altura de página
 
     # Ajustar el rango de impresión
     last_column = sheet.Cells(1, sheet.Columns.Count).End(-4159).Column  # -4159 es el valor de xlToLeft
@@ -32,6 +32,16 @@ def process_excel_to_pdf(excel_path, output_dir):
     workbook = excel.Workbooks.Open(excel_path)
     
     all_pdfs = []
+    day_pdfs = {}
+    
+    # Crear carpetas para los PDFs
+    individual_folder = os.path.join(output_dir, "Individuales")
+    days_folder = os.path.join(output_dir, "Dias")
+    combined_folder = os.path.join(output_dir, "Combinado")
+    
+    os.makedirs(individual_folder, exist_ok=True)
+    os.makedirs(days_folder, exist_ok=True)
+    os.makedirs(combined_folder, exist_ok=True)
     
     for sheet in workbook.Sheets:
         if sheet.UsedRange.Count > 1:  # Omitir hojas sin contenido
@@ -39,12 +49,30 @@ def process_excel_to_pdf(excel_path, output_dir):
             adjust_column_width(sheet)  # Ajusta el ancho de la primera columna
             set_page_orientation(sheet, sheet_name)  # Establece la orientación de la página
             
+            # Guardar el PDF individual
             pdf_filename = f"{sheet_name}.pdf"
-            pdf_path = save_sheet_as_pdf(sheet, output_dir, pdf_filename)
+            pdf_path = save_sheet_as_pdf(sheet, individual_folder, pdf_filename)
             all_pdfs.append(pdf_path)
-
+            
+            # Organizar los PDFs por día
+            day_name = sheet_name.split()[0]  # Suponiendo que el nombre del día es la primera parte del nombre de la hoja
+            if day_name not in day_pdfs:
+                day_pdfs[day_name] = []
+            day_pdfs[day_name].append(pdf_path)
+    
+    # Crear PDFs por día (5 hojas por PDF)
+    for day_name, pdfs in day_pdfs.items():
+        day_pdf_path = os.path.join(days_folder, f"{day_name}.pdf")
+        merger = PdfMerger()
+        
+        for pdf in pdfs:
+            merger.append(pdf)
+        
+        merger.write(day_pdf_path)
+        merger.close()
+    
     # Combinar todos los PDFs en uno solo
-    final_pdf_path = os.path.join(output_dir, "combined_output.pdf")
+    final_pdf_path = os.path.join(combined_folder, "combined_output.pdf")
     merger = PdfMerger()
     
     for pdf in all_pdfs:

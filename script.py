@@ -38,6 +38,8 @@ def menu():
             run_script('newGraficV6.py')
         elif choice == '7':
             run_script('GenerarHojasSemanaV3.py')
+        elif choice == '8':
+            run_script('ExportarImprimibleV1.py')
         elif choice == '11':
             run_script('Tools.py')
         elif choice == '0':
