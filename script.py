@@ -39,7 +39,7 @@ def menu():
         elif choice == '5':
             run_script('ExportarWhatsappV1.py')
         elif choice == '6':
-            run_script('newGraficV6.py')
+            run_script('newGraficV7.py')
         elif choice == '7':
             run_script('GenerarHojasSemanaV3.py')
         elif choice == '8':
