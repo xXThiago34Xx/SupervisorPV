@@ -1,5 +1,5 @@
 Trabajando:
-acomodar el orden en el script de generarHoja Semanal y en el de Diario
+
 
 Pendientes:
 al entradas y salidas existente añadir === como separadores entre horas

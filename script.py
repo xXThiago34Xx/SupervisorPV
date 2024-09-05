@@ -41,12 +41,12 @@ def menu():
         elif choice == '6':
             run_script('newGraficV7.py')
         elif choice == '7':
-            run_script('GenerarHojasSemanaV3.py')
+            run_script('GenerarHojasSemanaV4.py')
         elif choice == '8':
-            run_script('ExportarImprimibleV4.py')
+            run_script('ExportarImprimibleV6.py')
         elif choice == '10':
-            run_script('GenerarHojasSemanaV3.py')
-            run_script('ExportarImprimibleV4.py')
+            run_script('GenerarHojasSemanaV4.py')
+            run_script('ExportarImprimibleV6.py')
         elif choice == '11':
             run_script('Tools.py')
         elif choice == '0':
