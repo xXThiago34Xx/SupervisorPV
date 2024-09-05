@@ -17,8 +17,11 @@ def menu():
         print("3. Registrar Horario")
         print("4. Entradas y Salidas")
         print("5. Exportar WhatsApp")
-        print("6. Exportar Gráfico")
-        print("7. Exportar Excel Semanal")
+        print("6. Exportar Mapa de Horario")
+        print("7. Exportar Excel de Mapa de Horario Semanal")
+        print("8. Exportar PDF")
+        print("9. // EN DESARROLLO // Generar Ubicacion de Cajer@s")
+        print("10. Generar PDF (Ejecutar 7, 8 y 9)")
         print("11. Tools")
         print("0. Salir")
         
@@ -39,7 +42,10 @@ def menu():
         elif choice == '7':
             run_script('GenerarHojasSemanaV3.py')
         elif choice == '8':
-            run_script('ExportarImprimibleV1.py')
+            run_script('ExportarImprimibleV4.py')
+        elif choice == '10':
+            run_script('GenerarHojasSemanaV3.py')
+            run_script('ExportarImprimibleV4.py')
         elif choice == '11':
             run_script('Tools.py')
         elif choice == '0':
