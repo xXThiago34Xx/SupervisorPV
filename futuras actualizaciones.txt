@@ -1,8 +1,8 @@
 Trabajando:
-corregir carpeta dias
+acomodar el orden en el script de generarHoja Semanal y en el de Diario
 
 Pendientes:
-acomodar el orden en el script de generarHoja Semanal y en el de Diario
+al entradas y salidas existente añadir === como separadores entre horas
 crear script de entradas y salidas que me permita ver todo el personal que entra y sale a todas las horas y tambien permita ingresar un rango de horas
 añadir nickname apellido y nombre del chaleco para que solo salga eso en la hoja de cajeros porque el nombre completo no sale bien
 
