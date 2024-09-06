@@ -60,7 +60,7 @@ def generar_mensaje(horarios_dia):
                     horarios_salidas[hora].append((apellidos, nombres, entrada, salida))
 
         for hora in sorted(set(horarios_entradas.keys()).union(horarios_salidas.keys())):
-            mensaje += f"\n{hora}\n"
+            mensaje += f"\n=== {hora} ===\n"
             if hora in horarios_entradas:
                 mensaje += "Entradas:\n"
                 for apellidos, nombres, entrada, salida in sorted(horarios_entradas[hora], key=lambda x: x[1]):

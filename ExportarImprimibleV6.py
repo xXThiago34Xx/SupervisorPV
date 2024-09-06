@@ -6,13 +6,13 @@ from PyPDF2 import PdfMerger
 dias_de_la_semana = ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"]
 
 def adjust_column_width(sheet, sheet_name):
-    if "Ecommerce" in sheet_name or "Self" in sheet_name or "RS" in sheet_name or "Supervisor(@)" in sheet_name:
+    if "Ecommerce" in sheet_name or "Self" in sheet_name or "RS" in sheet_name or "Supervisor(@)" in sheet_name or "Cajer@" in sheet_name:
         sheet.Columns.AutoFit()
     else:
         sheet.Columns(1).AutoFit()
 
 def set_page_orientation(sheet, sheet_name):
-    if "Cajer@" in sheet_name or "RS" in sheet_name:
+    if "Cajer@" in sheet_name:
         sheet.PageSetup.Orientation = 2  # Horizontal
     else:
         sheet.PageSetup.Orientation = 1  # Vertical

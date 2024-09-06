@@ -54,7 +54,7 @@ def mostrar_horarios(horarios_dia, ver_por):
                     horarios_salidas[hora].append((apellidos, nombres, entrada, salida))
 
         for hora in sorted(set(horarios_entradas.keys()).union(horarios_salidas.keys())):
-            print(f"\n{hora}")
+            print(f"\n===== {hora} =====")
             if hora in horarios_entradas:
                 print("Entradas:")
                 for apellidos, nombres, entrada, salida in sorted(horarios_entradas[hora], key=lambda x: x[1]):
