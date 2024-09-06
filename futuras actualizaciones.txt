@@ -1,7 +1,12 @@
 Trabajando:
+corregir nick de xiomara linares
 
+crear funcion getNick() que bote el string correspondiente al nickname del nombre completo ingresado
+añadir nickname apellido y nombre del chaleco para que solo salga eso en la hoja de cajeros porque el nombre completo no sale bien
+crear script de entradas y salidas que me permita ver todo el personal que entra y sale a todas las horas y tambien permita ingresar un rango de horas
 
 Pendientes:
+crear script llamado consultar personal presentes en cierta hora
 al entradas y salidas existente añadir === como separadores entre horas
 crear script de entradas y salidas que me permita ver todo el personal que entra y sale a todas las horas y tambien permita ingresar un rango de horas
 añadir nickname apellido y nombre del chaleco para que solo salga eso en la hoja de cajeros porque el nombre completo no sale bien
