@@ -1,5 +1,6 @@
 # Función que obtiene el nickname del archivo nicks.txt
 def getNick(nombre_completo):
+    primer_nombre = lambda nombre_completo: nombre_completo.split()[0] if nombre_completo.split() else None
     try:
         with open("nicks.txt", "r", encoding="utf-8") as archivo_nicks:
             for linea in archivo_nicks:
@@ -10,7 +11,7 @@ def getNick(nombre_completo):
                 if nombre_completo == nombre_archivo:
                     return nickname
 
-        return f"ERROR NR"
+        return primer_nombre(nombre_completo)
 
     except FileNotFoundError:
         return "Error: El archivo 'nicks.txt' no fue encontrado."

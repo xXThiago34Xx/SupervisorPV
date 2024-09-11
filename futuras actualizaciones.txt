@@ -4,7 +4,6 @@ crear script de entradas y salidas que me permita ver todo el personal que entra
 
 Pendientes:
 crear script llamado consultar personal presentes en cierta hora
-al 4. entradas y salidas existente añadir === como separadores entre horas
 
 
 Reglas:

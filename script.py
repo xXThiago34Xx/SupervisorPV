@@ -22,7 +22,7 @@ def menu():
         print("6. Exportar Excel de Mapa de Horario ESPECIFICO")
         print("7. Exportar Excel de Mapa de Horario SEMANAL")
         print("8. Exportar Excel de Mapa de Horario SEMANAL a PDF")
-        print("9. // EN DESARROLLO // Exportar Excel de Mapa de Personal del Area DIA ESPECIFICO")
+        print("9. Exportar Excel de Mapa de Personal del Area DIA ESPECIFICO")
         print("10. // EN DESARROLLO // Exportar Excel de Mapa de Personal del Area SEMANAL")
         print("11. // EN DESARROLLO // Exportar Excel de Mapa de Personal del Area SEMANAL a PDF")
         print("13. // EN DESARROLLO // Generar Ubicacion de Cajer@s DIA ESPECIFICO")
@@ -52,6 +52,8 @@ def menu():
             run_script('GenerarHojasSemanaV5.py')
         elif choice == '8':
             run_script('ExportarImprimibleV6.py')
+        elif choice == '9':
+            run_script('ESV2.py')
         elif choice == '19':
             run_script('GenerarHojasSemanaV5.py')
             run_script('ExportarImprimibleV6.py')
