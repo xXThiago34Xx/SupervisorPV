@@ -1,6 +1,6 @@
 # Función que obtiene el nickname del archivo nicks.txt
 def getNick(nombre_completo):
-    primer_nombre = lambda nombre_completo: nombre_completo.split()[0] if nombre_completo.split() else None
+    primer_nombre = lambda nombre_completo: nombre_completo.split()[0] + (nombre_completo.split()[-2][0] if len(nombre_completo.split()) > 2 else "")
     try:
         with open("nicks.txt", "r", encoding="utf-8") as archivo_nicks:
             for linea in archivo_nicks:

@@ -23,12 +23,12 @@ def menu():
         print("7. Exportar Excel de Mapa de Horario SEMANAL")
         print("8. Exportar Excel de Mapa de Horario SEMANAL a PDF")
         print("9. Exportar Excel de Mapa de Personal del Area DIA ESPECIFICO")
-        print("10. // EN DESARROLLO // Exportar Excel de Mapa de Personal del Area SEMANAL")
+        print("10. Exportar Excel de Mapa de Personal del Area SEMANAL")
         print("11. // EN DESARROLLO // Exportar Excel de Mapa de Personal del Area SEMANAL a PDF")
         print("13. // EN DESARROLLO // Generar Ubicacion de Cajer@s DIA ESPECIFICO")
         print("14. // EN DESARROLLO // Generar Ubicacion de Cajer@s SEMANAL")
         print("15. // EN DESARROLLO // Generar Ubicacion de Cajer@s SEMANAL a PDF")
-        print("19. Generar PDF SEMANAL (Juntar todos los documentos Semanales en un PDF) (Ejecutar 7, 8, 11 y 15)")
+        print("19. Generar PDF SEMANAL (Juntar todos los documentos Semanales en un PDF) (Ejecutar 7, 8, 10, 11 y 15)")
         print("20. Tools")
         print("0. Salir")
         
@@ -54,9 +54,12 @@ def menu():
             run_script('ExportarImprimibleV6.py')
         elif choice == '9':
             run_script('ESV2.py')
+        elif choice == '10':
+            run_script('ESSemanalV4.py')
         elif choice == '19':
             run_script('GenerarHojasSemanaV5.py')
             run_script('ExportarImprimibleV6.py')
+            run_script('ESSemanalV4.py')
         elif choice == '20':
             run_script('Tools.py')
         elif choice == '0':
@@ -73,7 +76,7 @@ def run_script(script_name):
         os.system(f'python {script_name}')
     else:
         print(f"El archivo {script_name} no se encuentra.")
-    input("Presiona Enter para continuar...")  # Wait for user input before returning to the menu
+    #input("Presiona Enter para continuar...")  # Wait for user input before returning to the menu
     clear_screen()  # Clear the screen before displaying the menu again
 
 if __name__ == "__main__":

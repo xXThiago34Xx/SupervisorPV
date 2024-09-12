@@ -166,17 +166,17 @@ def combinar_y_centrar_celdas(ws, celda1, celda2, texto):
 
 
 # Función para crear el archivo Excel con el formato de la tabla de horarios
-def crear_tabla_excel(Entradas, Salidas, dia):
+def crearHojaXDia(wb, Entradas, Salidas, dia):
     """
     Crea un archivo Excel con el formato de tabla para los horarios del personal,
     llenando los datos desde la matriz 'Entradas'.
     
     :param Entradas: Matriz con las entradas del personal.
     """
-    # Crear el libro y la hoja de trabajo
-    wb = openpyxl.Workbook()
-    ws = wb.active
-    ws.title = f"{dia}"
+    # Crear la hoja de trabajo
+    wb.create_sheet(f"{dia}")
+    ws = wb[f"{dia}"]
+    #ws.title = f"{dia}"
 
     #Izquierda
     rellenar(ws, "B1", "Cajer@s", roles_colores["Cajer@"])
@@ -250,10 +250,6 @@ def crear_tabla_excel(Entradas, Salidas, dia):
     # Llenar las entradas en la hoja
     llenar_entradas(ws, Entradas)
     llenar_salidas(ws, Salidas)
-
-    # Guardar el archivo Excel
-    wb.save(f"ES_{dia}.xlsx")
-    print(f"Archivo 'ES_{dia}.xlsx' creado correctamente.")
 
 def cargar_horarios(archivo):
     horarios = []
@@ -375,34 +371,36 @@ def getNHora(hora_str):
         # Si la hora está fuera del rango permitido
         raise ValueError("La hora debe estar entre 6:00 y 24:00")
 
+def SeleccionarDia():
+    print("\nSeleccionar Día:")
+    for i, dia in enumerate(dias, 1):
+        print(f"{i}. {dia.capitalize()}")
+    dia_opcion = int(input("Ingrese el número de opción: ")) - 1
+    dia = dias[dia_opcion]
+    return dia
 
 
+#======================================================== def CrearTablaSemanal(): ========================================================
+def CrearTablaSemanal(Entradas, Salidas, dias):
+    archivo_horarios = "horario.txt"
+    horarios = cargar_horarios(archivo_horarios)
+    tipos_personal = ["Cajer@", "RS", "Self Checkout", "Ecommerce", "Supervisor(@)"]
+    # Llamamos a la función para crear la tabla Excel
+    wb = openpyxl.Workbook()
+    for dia in dias:
+        for tipoPersonal in tipos_personal:
+            #tipo_personal = tipos_personal[tipoPersonal]
+            horarios_dia = obtener_horarios_por_dia(horarios, dia, tipoPersonal)
+            print(f"----- {tipoPersonal} -----")
+            ESaMEMORIA(horarios_dia, tipoPersonal)
+        crearHojaXDia(wb, Entradas, Salidas, dia)
+    # Guardar el archivo Excel
+    wb.save(f"ES_Semanal.xlsx")
+    print(f"Archivo 'ES_Semanal.xlsx' creado correctamente.")
 
 
-
-
-
-
-Entradas = [[["" for _ in range(2)] for _ in range(6)] for _ in range(73)]
-Salidas = [[["" for _ in range(2)] for _ in range(7)] for _ in range(73)]
-
-
-archivo_horarios = "horario.txt"
-horarios = cargar_horarios(archivo_horarios)
 
 dias = ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"]
-tipos_personal = ["Cajer@", "RS", "Self Checkout", "Ecommerce", "Supervisor(@)"]  
-print("\nSeleccionar Día:")
-for i, dia in enumerate(dias, 1):
-    print(f"{i}. {dia.capitalize()}")
-dia_opcion = int(input("Ingrese el número de opción: ")) - 1
-dia = dias[dia_opcion]
-for tipoPersonal in tipos_personal:
-    #tipo_personal = tipos_personal[tipoPersonal]
-    horarios_dia = obtener_horarios_por_dia(horarios, dia, tipoPersonal)
-    print(f"----- {tipoPersonal} -----")
-    ESaMEMORIA(horarios_dia, tipoPersonal)
-
-
-# Llamamos a la función para crear la tabla Excel
-crear_tabla_excel(Entradas, Salidas, dia)
+Entradas = [[["" for _ in range(2)] for _ in range(6)] for _ in range(73)]
+Salidas = [[["" for _ in range(2)] for _ in range(7)] for _ in range(73)]
+CrearTablaSemanal(Entradas, Salidas, dias)

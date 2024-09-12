@@ -9,6 +9,7 @@ from mostrarNicks import getNick, getApNick
 from datetime import datetime, timedelta
 from openpyxl.styles import Border, Side
 from openpyxl.styles import Alignment
+from openpyxl import load_workbook
 
 # Definición de los colores por roles
 roles_colores = {
@@ -58,7 +59,7 @@ def llenar_entradas(ws, Entradas):
 
         # Recorrer los elementos de Entradas[i] y colocarlos en las columnas B a G
         for j, entrada in enumerate(Entradas[i]):
-            if j < 6 and len(entrada) == 2:  # Solo colocar en las primeras 6 columnas (B a G) si hay 2 elementos (nombre y tipo)
+            if j < 7 and len(entrada) == 2:  # Solo colocar en las primeras 6 columnas (B a G) si hay 2 elementos (nombre y tipo)
                 nombre, tipo_personal = entrada
                 
                 # Definir la celda correspondiente en la hoja
@@ -94,16 +95,16 @@ def llenar_salidas(ws, Salidas):
         hora = getHoraxIntervalo(i)  # Obtener la hora en formato HH:MM
         
         # Colocar la hora en la columna A
-        celda_hora = f"H{i+2}"  # La columna H, desde la fila 3
+        celda_hora = f"I{i+2}"  # La columna H, desde la fila 3
         ws[celda_hora] = hora
 
         # Recorrer los elementos de Entradas[i] y colocarlos en las columnas B a G
         for j, salida in enumerate(Salidas[i]):
-            if j < 7 and len(salida) == 2:  # Solo colocar en las primeras 6 columnas (B a G) si hay 2 elementos (nombre y tipo)
+            if j < 8 and len(salida) == 2:  # Solo colocar en las primeras 6 columnas (B a G) si hay 2 elementos (nombre y tipo)
                 nombre, tipo_personal = salida
                 
                 # Definir la celda correspondiente en la hoja
-                celda_columna = get_column_letter(j + 2 + 7)  # Desde la columna B (que es la columna 2)
+                celda_columna = get_column_letter(j + 2 + 8)  # Desde la columna B (que es la columna 2)
                 celda_fila = i + 2  # Fila empieza en 3 porque fila 1 y 2 son los encabezados
                 celda = f"{celda_columna}{celda_fila}"
                 
@@ -164,9 +165,24 @@ def combinar_y_centrar_celdas(ws, celda1, celda2, texto):
     # Centrar el texto
     ws[celda1].alignment = Alignment(horizontal='center', vertical='center')
 
+# Función para ajustar automáticamente el ancho de las columnas
+def ajustar_ancho_columnas(sheet):
+    for col in sheet.columns:
+        max_length = 0
+        column = col[0].column_letter  # Obtener la letra de la columna
+        for cell in col:
+            try:
+                # Obtener la longitud máxima del contenido de la columna
+                if cell.value:
+                    max_length = max(max_length, len(str(cell.value)))
+            except:
+                pass
+        # Ajustar el ancho de la columna basado en la longitud máxima
+        adjusted_width = (max_length + 2)  # Se añade un poco de espacio adicional
+        sheet.column_dimensions[column].width = adjusted_width
 
 # Función para crear el archivo Excel con el formato de la tabla de horarios
-def crear_tabla_excel(Entradas, Salidas, dia):
+def crearHojaXDia(wb, Entradas, Salidas, dia):
     """
     Crea un archivo Excel con el formato de tabla para los horarios del personal,
     llenando los datos desde la matriz 'Entradas'.
@@ -174,29 +190,25 @@ def crear_tabla_excel(Entradas, Salidas, dia):
     :param Entradas: Matriz con las entradas del personal.
     """
     # Crear el libro y la hoja de trabajo
-    wb = openpyxl.Workbook()
-    ws = wb.active
-    ws.title = f"{dia}"
+    
+    wb.create_sheet(f"{dia}")
+    ws = wb[f"{dia}"]
 
     #Izquierda
-    rellenar(ws, "B1", "Cajer@s", roles_colores["Cajer@"])
-    rellenar(ws, "C1", "RS", roles_colores["RS"])
-    rellenar(ws, "D1", "Self Checkout", roles_colores["Self Checkout"])
-    rellenar(ws, "E1", "Ecommerce", roles_colores["Ecommerce"])
-    rellenar(ws, "F1", "Supervisores", roles_colores["Supervisor(@)"])
+    rellenar(ws, "C1", "Caj@s", roles_colores["Cajer@"])
+    rellenar(ws, "D1", "RS", roles_colores["RS"])
+    rellenar(ws, "E1", "Self", roles_colores["Self Checkout"])
+    rellenar(ws, "F1", "RT", roles_colores["Ecommerce"])
+    rellenar(ws, "G1", "Supers", roles_colores["Supervisor(@)"])
 
     #Derecha
-    rellenar(ws, "J1", "Cajer@s", roles_colores["Cajer@"])
-    rellenar(ws, "K1", "RS", roles_colores["RS"])
-    rellenar(ws, "L1", "Self Checkout", roles_colores["Self Checkout"])
-    rellenar(ws, "M1", "Ecommerce", roles_colores["Ecommerce"])
-    rellenar(ws, "N1", "Supervisores", roles_colores["Supervisor(@)"])
+    rellenar(ws, "K1", "Caj@s", roles_colores["Cajer@"])
+    rellenar(ws, "L1", "RS", roles_colores["RS"])
+    rellenar(ws, "M1", "Self", roles_colores["Self Checkout"])
+    rellenar(ws, "N1", "RT", roles_colores["Ecommerce"])
+    rellenar(ws, "O1", "Supers", roles_colores["Supervisor(@)"])
 
-    #Titulos
-    rellenar(ws, "A1", "Entradas", "")
-    rellenar(ws, "H1", "Salidas", "")
-    combinar_y_centrar_celdas(ws, "A2", "G2", "Horas de Entrada del Personal del Area de Cajas")
-    combinar_y_centrar_celdas(ws, "H2", "O2", "Horas de Salida del Personal del Area de Cajas")
+    
 
 
 
@@ -213,7 +225,7 @@ def crear_tabla_excel(Entradas, Salidas, dia):
     )
 
     # Aplicar bordes a todas las celdas desde la columna A hasta la columna O
-    for row in ws.iter_rows(min_row=1, max_row=74, min_col=1, max_col=15):  # Ajusta el rango según sea necesario
+    for row in ws.iter_rows(min_row=1, max_row=74, min_col=1, max_col=17):  # Ajusta el rango según sea necesario
         for cell in row:
             cell.border = border
             
@@ -227,33 +239,40 @@ def crear_tabla_excel(Entradas, Salidas, dia):
             horarios.append(current_time.strftime("%H:%M"))
             current_time += timedelta(minutes=15)
 
-    # Rellenar las columnas A y H con los horarios
+    # Rellenar las columnas A y I con los horarios
     for i, horario in enumerate(horarios):
         row_num = 3 + i
         if row_num <= 75:  # Asegurarse de no exceder la fila 75
             ws[f'A{row_num}'] = horario
-            ws[f'H{row_num}'] = horario
+            ws[f'I{row_num}'] = horario
 
             # Alternar colores de las filas
             fill_color = color_gris if (row_num - 3) % 2 == 0 else color_blanco
             fill = PatternFill(start_color=fill_color, end_color=fill_color, fill_type='solid')
 
-            for col in range(1, 16):  # Desde la columna A hasta la columna O
+            for col in range(1, 18):  # Desde la columna A hasta la columna Q
                 col_letter = get_column_letter(col)
                 ws[f'{col_letter}{row_num}'].fill = fill
 
     # Ajustar el ancho de las columnas para una mejor visualización
-    for col in range(1, 16):
+    for col in range(1, 18):
         col_letter = get_column_letter(col)
         ws.column_dimensions[col_letter].width = 15
     
     # Llenar las entradas en la hoja
     llenar_entradas(ws, Entradas)
     llenar_salidas(ws, Salidas)
+    ajustar_ancho_columnas(ws)
+    #Titulos
+    #rellenar(ws, "A1", "Entradas", "")
+    #rellenar(ws, "I1", "Salidas", "")
+    diaM = dia.capitalize()
+    combinar_y_centrar_celdas(ws, "A1", "B1", f"Entradas {diaM}")
+    combinar_y_centrar_celdas(ws, "I1", "J1", f"Salidas {diaM}")
+    combinar_y_centrar_celdas(ws, "A2", "H2", f"Horas de Entrada del Personal del Area de Cajas del Día {diaM}")
+    combinar_y_centrar_celdas(ws, "I2", "Q2", f"Horas de Salida del Personal del Area de Cajas  Día {diaM}")
 
-    # Guardar el archivo Excel
-    wb.save(f"ES_{dia}.xlsx")
-    print(f"Archivo 'ES_{dia}.xlsx' creado correctamente.")
+
 
 def cargar_horarios(archivo):
     horarios = []
@@ -376,33 +395,46 @@ def getNHora(hora_str):
         raise ValueError("La hora debe estar entre 6:00 y 24:00")
 
 
+def EliminarPrimeraHoja():
+    # Cargar el archivo de Excel
+    workbook = load_workbook("ES_Semanal.xlsx")
+
+    # Obtener el nombre de la primera hoja
+    first_sheet_name = workbook.sheetnames[0]
+
+    # Eliminar la primera hoja
+    del workbook[first_sheet_name]
+
+    # Guardar el archivo modificado
+    workbook.save("ES_Semanal.xlsx")
+        
 
 
 
 
 
-
-
-Entradas = [[["" for _ in range(2)] for _ in range(6)] for _ in range(73)]
-Salidas = [[["" for _ in range(2)] for _ in range(7)] for _ in range(73)]
 
 
 archivo_horarios = "horario.txt"
 horarios = cargar_horarios(archivo_horarios)
-
 dias = ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"]
 tipos_personal = ["Cajer@", "RS", "Self Checkout", "Ecommerce", "Supervisor(@)"]  
-print("\nSeleccionar Día:")
-for i, dia in enumerate(dias, 1):
-    print(f"{i}. {dia.capitalize()}")
-dia_opcion = int(input("Ingrese el número de opción: ")) - 1
-dia = dias[dia_opcion]
-for tipoPersonal in tipos_personal:
-    #tipo_personal = tipos_personal[tipoPersonal]
-    horarios_dia = obtener_horarios_por_dia(horarios, dia, tipoPersonal)
-    print(f"----- {tipoPersonal} -----")
-    ESaMEMORIA(horarios_dia, tipoPersonal)
 
 
-# Llamamos a la función para crear la tabla Excel
-crear_tabla_excel(Entradas, Salidas, dia)
+Entradas = [[["" for _ in range(2)] for _ in range(6)] for _ in range(73)]
+Salidas = [[["" for _ in range(2)] for _ in range(7)] for _ in range(73)]
+wb = openpyxl.Workbook()
+for dia in dias:
+    for tipoPersonal in tipos_personal:
+        #tipo_personal = tipos_personal[tipoPersonal]
+        horarios_dia = obtener_horarios_por_dia(horarios, dia, tipoPersonal)
+        print(f"----- {tipoPersonal} -----")
+        ESaMEMORIA(horarios_dia, tipoPersonal)
+    crearHojaXDia(wb, Entradas, Salidas, dia)
+    Entradas = [[["" for _ in range(2)] for _ in range(7)] for _ in range(73)]
+    Salidas = [[["" for _ in range(2)] for _ in range(8)] for _ in range(73)]
+
+# Guardar el archivo Excel
+wb.save(f"ES_Semanal.xlsx")
+EliminarPrimeraHoja()
+print(f"Archivo 'ES_Semanal.xlsx' creado correctamente.")

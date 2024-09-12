@@ -1,6 +1,5 @@
 Trabajando:
-
-crear script de entradas y salidas que me permita ver todo el personal que entra y sale a todas las horas
+añadir funciones 10 11
 
 Pendientes:
 crear script llamado consultar personal presentes en cierta hora

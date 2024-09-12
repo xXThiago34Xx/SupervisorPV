@@ -9,6 +9,7 @@ from mostrarNicks import getNick, getApNick
 from datetime import datetime, timedelta
 from openpyxl.styles import Border, Side
 from openpyxl.styles import Alignment
+from openpyxl import load_workbook
 
 # Definición de los colores por roles
 roles_colores = {
@@ -166,7 +167,7 @@ def combinar_y_centrar_celdas(ws, celda1, celda2, texto):
 
 
 # Función para crear el archivo Excel con el formato de la tabla de horarios
-def crear_tabla_excel(Entradas, Salidas, dia):
+def crearHojaXDia(wb, Entradas, Salidas, dia):
     """
     Crea un archivo Excel con el formato de tabla para los horarios del personal,
     llenando los datos desde la matriz 'Entradas'.
@@ -174,9 +175,9 @@ def crear_tabla_excel(Entradas, Salidas, dia):
     :param Entradas: Matriz con las entradas del personal.
     """
     # Crear el libro y la hoja de trabajo
-    wb = openpyxl.Workbook()
-    ws = wb.active
-    ws.title = f"{dia}"
+    
+    wb.create_sheet(f"{dia}")
+    ws = wb[f"{dia}"]
 
     #Izquierda
     rellenar(ws, "B1", "Cajer@s", roles_colores["Cajer@"])
@@ -251,9 +252,7 @@ def crear_tabla_excel(Entradas, Salidas, dia):
     llenar_entradas(ws, Entradas)
     llenar_salidas(ws, Salidas)
 
-    # Guardar el archivo Excel
-    wb.save(f"ES_{dia}.xlsx")
-    print(f"Archivo 'ES_{dia}.xlsx' creado correctamente.")
+
 
 def cargar_horarios(archivo):
     horarios = []
@@ -347,7 +346,7 @@ def Empilar(arreglo, fila, valor1, valor2):
             return
     
     # Si no se encuentra una posición vacía, levantar una excepción
-    raise Exception("No hay espacio disponible en la fila especificada.")
+    #raise Exception("No hay espacio disponible en la fila especificada.")
 
 def getNHora(hora_str):
     # Convertir el string de hora a una lista con horas y minutos
@@ -376,33 +375,46 @@ def getNHora(hora_str):
         raise ValueError("La hora debe estar entre 6:00 y 24:00")
 
 
+def EliminarPrimeraHoja():
+    # Cargar el archivo de Excel
+    workbook = load_workbook("ES_Semanal.xlsx")
+
+    # Obtener el nombre de la primera hoja
+    first_sheet_name = workbook.sheetnames[0]
+
+    # Eliminar la primera hoja
+    del workbook[first_sheet_name]
+
+    # Guardar el archivo modificado
+    workbook.save("ES_Semanal.xlsx")
+        
 
 
 
 
 
-
-
-Entradas = [[["" for _ in range(2)] for _ in range(6)] for _ in range(73)]
-Salidas = [[["" for _ in range(2)] for _ in range(7)] for _ in range(73)]
 
 
 archivo_horarios = "horario.txt"
 horarios = cargar_horarios(archivo_horarios)
-
 dias = ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"]
 tipos_personal = ["Cajer@", "RS", "Self Checkout", "Ecommerce", "Supervisor(@)"]  
-print("\nSeleccionar Día:")
-for i, dia in enumerate(dias, 1):
-    print(f"{i}. {dia.capitalize()}")
-dia_opcion = int(input("Ingrese el número de opción: ")) - 1
-dia = dias[dia_opcion]
-for tipoPersonal in tipos_personal:
-    #tipo_personal = tipos_personal[tipoPersonal]
-    horarios_dia = obtener_horarios_por_dia(horarios, dia, tipoPersonal)
-    print(f"----- {tipoPersonal} -----")
-    ESaMEMORIA(horarios_dia, tipoPersonal)
 
 
-# Llamamos a la función para crear la tabla Excel
-crear_tabla_excel(Entradas, Salidas, dia)
+Entradas = [[["" for _ in range(2)] for _ in range(6)] for _ in range(73)]
+Salidas = [[["" for _ in range(2)] for _ in range(7)] for _ in range(73)]
+wb = openpyxl.Workbook()
+for dia in dias:
+    for tipoPersonal in tipos_personal:
+        #tipo_personal = tipos_personal[tipoPersonal]
+        horarios_dia = obtener_horarios_por_dia(horarios, dia, tipoPersonal)
+        print(f"----- {tipoPersonal} -----")
+        ESaMEMORIA(horarios_dia, tipoPersonal)
+    crearHojaXDia(wb, Entradas, Salidas, dia)
+    Entradas = [[["" for _ in range(2)] for _ in range(6)] for _ in range(73)]
+    Salidas = [[["" for _ in range(2)] for _ in range(7)] for _ in range(73)]
+
+# Guardar el archivo Excel
+wb.save(f"ES_Semanal.xlsx")
+EliminarPrimeraHoja()
+print(f"Archivo 'ES_Semanal.xlsx' creado correctamente.")
