@@ -19,12 +19,12 @@ def menu():
         print("4. Entradas y Salidas")
         print("41. // EN DESARROLLO // Personal Presente A Cierta Hora")
         print("5. Exportar WhatsApp")
-        print("6. Exportar Excel de Mapa de Horario ESPECIFICO")
+        print("6. Exportar Excel de Mapa de Horario DIA ESPECIFICO")
         print("7. Exportar Excel de Mapa de Horario SEMANAL")
         print("8. Exportar Excel de Mapa de Horario SEMANAL a PDF")
         print("9. Exportar Excel de Mapa de Personal del Area DIA ESPECIFICO")
         print("10. Exportar Excel de Mapa de Personal del Area SEMANAL")
-        print("11. // EN DESARROLLO // Exportar Excel de Mapa de Personal del Area SEMANAL a PDF")
+        print("11. Exportar Excel de Mapa de Personal del Area SEMANAL a PDF")
         print("13. // EN DESARROLLO // Generar Ubicacion de Cajer@s DIA ESPECIFICO")
         print("14. // EN DESARROLLO // Generar Ubicacion de Cajer@s SEMANAL")
         print("15. // EN DESARROLLO // Generar Ubicacion de Cajer@s SEMANAL a PDF")
@@ -56,10 +56,13 @@ def menu():
             run_script('ESV2.py')
         elif choice == '10':
             run_script('ESSemanalV4.py')
+        elif choice == '11':
+            run_script('ExportarESaPDF.py')
         elif choice == '19':
             run_script('GenerarHojasSemanaV5.py')
             run_script('ExportarImprimibleV6.py')
             run_script('ESSemanalV4.py')
+            run_script('ExportarESaPDF.py')
         elif choice == '20':
             run_script('Tools.py')
         elif choice == '0':
