@@ -63,6 +63,7 @@ def menu():
             run_script('ExportarImprimibleV6.py')
             run_script('ESSemanalV4.py')
             run_script('ExportarESaPDF.py')
+            run_script('mergerV1.py')
         elif choice == '20':
             run_script('Tools.py')
         elif choice == '0':
