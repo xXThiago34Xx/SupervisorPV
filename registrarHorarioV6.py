@@ -51,6 +51,9 @@ def interpretar_salida(salida, entrada):
         return formatear_hora(salida)
 
 def registrar_horario_por_categoria(categoria, personal):
+    for per in personal:
+        if per[2].lower() == categoria.lower():
+            print(per)
     personal_categoria = [p for p in personal if p[2].lower() == categoria.lower()]
     if not personal_categoria:
         print(f"No se encontró personal en la categoría '{categoria}'.")
@@ -85,6 +88,7 @@ def registrar_horario_por_categoria(categoria, personal):
                         continue
                 elif entrada.lower() == "//":
                     print("Reiniciando desde el lunes para la misma persona.")
+                    jornada_duracion = None
                     dia_index = 0  # Reiniciar el índice del día para empezar desde el lunes
                     horario = [apellidos, nombres, cargo]
                     continue
