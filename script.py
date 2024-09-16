@@ -64,6 +64,9 @@ def menu():
             run_script('ESSemanalV4.py')
             run_script('ExportarESaPDF.py')
             run_script('mergerV1.py')
+            op = input("Imprimir? : ")
+            if op == "1":
+                run_script('ImprimirExportado.py')
         elif choice == '20':
             run_script('Tools.py')
         elif choice == '0':
