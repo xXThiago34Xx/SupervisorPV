@@ -1,5 +1,5 @@
 import openpyxl
-from openpyxl.styles import PatternFill, Font
+from openpyxl.styles import PatternFill, Font, Border, Side, Alignment
 from openpyxl.utils import get_column_letter
 from openpyxl import Workbook
 import datetime
@@ -7,8 +7,6 @@ import csv
 from collections import defaultdict
 from mostrarNicks import getNick, getApNick
 from datetime import datetime, timedelta
-from openpyxl.styles import Border, Side
-from openpyxl.styles import Alignment
 from openpyxl import load_workbook
 
 # Definición de los colores por roles
@@ -59,7 +57,7 @@ def llenar_entradas(ws, Entradas):
 
         # Recorrer los elementos de Entradas[i] y colocarlos en las columnas B a G
         for j, entrada in enumerate(Entradas[i]):
-            if j < 7 and len(entrada) == 2:  # Solo colocar en las primeras 6 columnas (B a G) si hay 2 elementos (nombre y tipo)
+            if j < 9 and len(entrada) == 2:  # Solo colocar en las primeras 6 columnas (B a G) si hay 2 elementos (nombre y tipo)
                 nombre, tipo_personal = entrada
                 
                 # Definir la celda correspondiente en la hoja
@@ -100,7 +98,7 @@ def llenar_salidas(ws, Salidas):
 
         # Recorrer los elementos de Entradas[i] y colocarlos en las columnas B a G
         for j, salida in enumerate(Salidas[i]):
-            if j < 8 and len(salida) == 2:  # Solo colocar en las primeras 6 columnas (B a G) si hay 2 elementos (nombre y tipo)
+            if j < 9 and len(salida) == 2:  # Solo colocar en las primeras 6 columnas (B a G) si hay 2 elementos (nombre y tipo)
                 nombre, tipo_personal = salida
                 
                 # Definir la celda correspondiente en la hoja
@@ -327,22 +325,22 @@ def ESaMEMORIA(horarios_dia, tipoPersonal):
     for hora in sorted(set(horarios_entradas.keys()).union(horarios_salidas.keys())):
         print(f"\n===== {hora} =====")
         if hora in horarios_entradas:
-            print("Entradas:")
             for apellidos, nombres, entrada, salida in sorted(horarios_entradas[hora], key=lambda x: x[1]):
                 print(f"{apellidos} {nombres} - {entrada} - {salida}")
                 nombre_completo = f"{nombres} {apellidos}"
                 nick = getNick(nombre_completo)
                 ap = getApNick(nombre_completo)
                 nickname_completo = f"{nick}" # f"{nick} {ap}"
+                print("-> ", nickname_completo, tipoPersonal)
                 Empilar(Entradas, getNHora(entrada), nickname_completo, tipoPersonal)
         if hora in horarios_salidas:
-            print("Salidas:")
             for apellidos, nombres, entrada, salida in sorted(horarios_salidas[hora], key=lambda x: x[1]):
                 print(f"{apellidos} {nombres} - {entrada} - {salida}")
                 nombre_completo = f"{nombres} {apellidos}"
                 nick = getNick(nombre_completo)
                 ap = getApNick(nombre_completo)
                 nickname_completo = f"{nick}" # f"{nick} {ap}"
+                print("-> ", nickname_completo, tipoPersonal)
                 Empilar(Salidas, getNHora(salida), nickname_completo, tipoPersonal)
 
 def Empilar(arreglo, fila, valor1, valor2):
@@ -420,9 +418,9 @@ horarios = cargar_horarios(archivo_horarios)
 dias = ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"]
 tipos_personal = ["Cajer@", "RS", "Self Checkout", "Ecommerce", "Supervisor(@)"]  
 
-
-Entradas = [[["" for _ in range(2)] for _ in range(6)] for _ in range(73)]
-Salidas = [[["" for _ in range(2)] for _ in range(7)] for _ in range(73)]
+# TODO: Adaptar el upperbound de Entrada y Salida según horarios_dia
+Entradas = [[["" for _ in range(2)] for _ in range(8)] for _ in range(73)]
+Salidas = [[["" for _ in range(2)] for _ in range(8)] for _ in range(73)]
 wb = openpyxl.Workbook()
 for dia in dias:
     for tipoPersonal in tipos_personal:
@@ -431,8 +429,8 @@ for dia in dias:
         print(f"----- {tipoPersonal} -----")
         ESaMEMORIA(horarios_dia, tipoPersonal)
     crearHojaXDia(wb, Entradas, Salidas, dia)
-    Entradas = [[["" for _ in range(2)] for _ in range(7)] for _ in range(73)]
-    Salidas = [[["" for _ in range(2)] for _ in range(8)] for _ in range(73)]
+    Entradas = [[["" for _ in range(2)] for _ in range(9)] for _ in range(73)]
+    Salidas = [[["" for _ in range(2)] for _ in range(9)] for _ in range(73)]
 
 # Guardar el archivo Excel
 wb.save(f"ES_Semanal.xlsx")
