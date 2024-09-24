@@ -6,4 +6,4 @@ crear script llamado consultar personal presentes en cierta hora
 
 
 Reglas:
-Si un RS figura como apoyo en cajas o self ponerle descanso en el horario de RS
+Si un RS figura como apoyo en cajas no ponerlo en cajas solo usar el metodo de identificar al 4to rs para ponerlo adentro
