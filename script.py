@@ -16,6 +16,7 @@ def menu():
         print("12. Registrar NICKNAMES de Personal")
         print("2. Limpiar Horario")
         print("3. Registrar Horario")
+        print("31. Cambiar Orden Personal")
         print("4. Entradas y Salidas")
         print("41. // EN DESARROLLO // Personal Presente A Cierta Hora")
         print("5. Exportar WhatsApp")
@@ -42,6 +43,8 @@ def menu():
             run_script('limpiarHorario.py')
         elif choice == '3':
             run_script('registrarHorarioV6.py')
+        elif choice == '31':
+            run_script('orden.py')
         elif choice == '4':
             run_script('EntradasSalidasV5.py')
         elif choice == '5':
