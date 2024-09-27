@@ -16,9 +16,11 @@ def menu():
         print("12. Registrar NICKNAMES de Personal")
         print("2. Limpiar Horario")
         print("3. Registrar Horario")
-        print("31. Cambiar Orden Personal")
+        print("31. Editar Horario")
+        print("32. Ver Horario de Personal ESPECIFICO")
+        print("33. Cambiar Orden Personal")
         print("4. Entradas y Salidas")
-        print("41. // EN DESARROLLO // Personal Presente A Cierta Hora")
+        print("41. Ver Personal Presente A Cierta Hora")
         print("5. Exportar WhatsApp")
         print("6. Exportar Excel de Mapa de Horario DIA ESPECIFICO")
         print("7. Exportar Excel de Mapa de Horario SEMANAL")
@@ -44,9 +46,15 @@ def menu():
         elif choice == '3':
             run_script('registrarHorarioV6.py')
         elif choice == '31':
+            run_script('editarHorario.py')
+        elif choice == '32':
+            run_script('verHorarioPersonal.py')
+        elif choice == '33':
             run_script('orden.py')
         elif choice == '4':
             run_script('EntradasSalidasV5.py')
+        elif choice == '41':
+            run_script('personalPresente.py')
         elif choice == '5':
             run_script('ExportarWhatsappV1.py')
         elif choice == '6':
