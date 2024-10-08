@@ -1,0 +1,6 @@
+1,1,RS
+2,1,Supervisor(a)
+3,1,Jefa de Cajas
+4,1,SubGerente
+5,1,Gerente
+6,2,Prevencionista

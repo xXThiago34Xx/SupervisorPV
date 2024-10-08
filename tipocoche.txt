@@ -1,0 +1,4 @@
+1,Metalico
+2,Hibrido
+3,Plastico
+4,Loop

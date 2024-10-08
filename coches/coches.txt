@@ -1,0 +1,57 @@
+Iniciar Sesion:
+    Input(Usuario, Contraseña)
+    Buttons(Iniciar Sesion)
+
+
+Funcionalidades: Cochces que llevan mucho tiempo fuera, reporte de conteo de coches, seguimiento coches
+Acciones:
+    Reportar Coche
+        Escanear Coche
+        Input(Codigo(s))
+        Input(List Ubicacion) // List Ubicacion may be En Tienda, Fuera de Tienda, Playa
+        Button(Reportar)
+
+    Ver Historial de Coches
+
+    Conteo de Coches
+
+
+
+
+
+Tablas:
+
+
+Coche:
+id
+Tipo
+
+User:
+id
+Usuario
+Clave
+Nombre Completo
+idCargo
+
+Empresa:
+id
+Nombre
+
+Cargo:
+id
+idEmpresa
+NombreCargo
+
+Ubicacion:
+id
+Nombre
+
+Registros:
+id
+Fecha
+Hora
+idUsuario
+IdCoche
+IdUbicacionReportada
+Observacion
+
