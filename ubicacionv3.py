@@ -132,6 +132,16 @@ def imprimir_resultados(cajas, rapidas, dia):
         for cajero in cajeros:
             print(f"{cajero['apellido']} {cajero['nombre']} - {cajero['horaEntrada'].strftime('%H:%M')} - {cajero['horaSalida'].strftime('%H:%M')}")
 
+def cajas_list(cajas, rapidas):
+    glo = []
+    for caja_num, cajeros in cajas.items():
+        for cajero in cajeros:
+            glo.append([caja_num, cajero['apellido'] + ", " + cajero['nombre'], cajero['horaEntrada'].strftime('%H:%M'), cajero['horaSalida'].strftime('%H:%M')])
+    for caja_num, cajeros in rapidas.items():
+        for cajero in cajeros:
+            glo.append([20 + caja_num, cajero['apellido'] + ", " + cajero['nombre'], cajero['horaEntrada'].strftime('%H:%M'), cajero['horaSalida'].strftime('%H:%M')])
+    return glo
+
 # Función para mostrar la lista de cajeros
 def mostrar_cajeros(cajeros):
     print("Lista de cajeros:")
