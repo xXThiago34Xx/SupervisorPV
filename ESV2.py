@@ -1,11 +1,12 @@
 import openpyxl
-from openpyxl.styles import PatternFill, Font, get_column_letter, Border, Side, Alignment
+from openpyxl.styles import PatternFill, Font, Border, Side, Alignment
 from openpyxl import Workbook
 import datetime
 import csv
 from collections import defaultdict
 from mostrarNicks import getNick, getApNick
 from datetime import datetime, timedelta
+from openpyxl.utils import get_column_letter
 
 # Definición de los colores por roles
 roles_colores = {
