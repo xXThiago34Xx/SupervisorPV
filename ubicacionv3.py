@@ -175,7 +175,11 @@ def main():
     # Imprimir los 
     imprimir_resultados(cajas, rapidas, dia_seleccionado)
 
-    print(f"\n\n\n========== Imprimir Cajeros 22:45 ==========")
+    print(f"\n\n\n========== Imprimir Array Cajeros ==========")
+    
+    imprimir = cajas_list(cajas,rapidas)
+    for e in imprimir:
+        print(e)
 
 
 def eliminar_duplicados(lista):
