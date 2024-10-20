@@ -115,6 +115,9 @@ def imprimir_resultados(cajas, rapidas, dia):
         print(f"\nCaja Regular {caja_num}:")
         for i, cajero in enumerate(cajeros):
             if caja_num == 1:
+                if (i == 0):
+                    print(f"{cajero['apellido']} {cajero['nombre']} - {cajero['horaEntrada'].strftime('%H:%M')} - {cajero['horaSalida'].strftime('%H:%M')}")
+                    continue
                 if i < len(cajeros):
                     anterior_cajero = cajeros[i - 1]
                     print(f"{cajero['apellido']} {cajero['nombre']} - {(anterior_cajero['horaSalida']-timedelta(minutes=15) ).strftime('%H:%M')} - {cajero['horaSalida'].strftime('%H:%M')}")
