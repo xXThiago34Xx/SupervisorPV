@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 # Función para cargar los horarios desde el archivo
 def cargar_horarios(archivo):
     cajeros = []
-    with open(archivo, 'r') as file:
+    with open(archivo, 'r', encoding='utf-8') as file:
         reader = csv.reader(file)
         for fila in reader:
             cajeros.append(fila)

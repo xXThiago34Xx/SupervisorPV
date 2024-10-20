@@ -1,13 +1,6 @@
 import csv
 from collections import defaultdict
-
-def cargar_horarios(archivo):
-    horarios = []
-    with open(archivo, "r") as archivo:
-        lector = csv.reader(archivo)
-        for fila in lector:
-            horarios.append(fila)
-    return horarios
+from ubicacionv3 import dia_menu, cargar_horarios
 
 def formatear_hora(hora):
     hora_str = str(hora)
@@ -19,15 +12,14 @@ def formatear_hora(hora):
         hora_str = hora_str[:2] + ":" + hora_str[2:]
     return hora_str
 
-def obtener_horarios_por_dia(horarios, dia, tipo_personal):
-    dia_index = ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"].index(dia.lower())
+def obtener_horarios_por_dia(horarios, diaI, tipo_personal):
     horarios_dia = defaultdict(list)
     
     for registro in horarios:
         apellidos, nombres, cargo, *dias = registro
         if cargo.lower() == tipo_personal.lower():
-            entrada = dias[dia_index * 2]
-            salida = dias[dia_index * 2 + 1]
+            entrada = dias[(diaI-1) * 2]
+            salida = dias[(diaI-1) * 2 + 1]
             entrada_formateada = formatear_hora(entrada)
             salida_formateada = formatear_hora(salida)
             if entrada_formateada == "DESCANSO" and salida_formateada == "DESCANSO":
@@ -38,9 +30,8 @@ def obtener_horarios_por_dia(horarios, dia, tipo_personal):
     
     return horarios_dia
 
-def printSelf(horarios_dia):
-    Self = []
-    print("\nOrden de Entradas:")
+
+def procesar_registros(horarios_dia):
     entradas = []
     for entrada, registros in horarios_dia.items():
         if entrada != 'DESCANSO':
@@ -48,32 +39,33 @@ def printSelf(horarios_dia):
                 if len(registro) == 4:
                     apellidos, nombres, entrada, salida = registro
                     entradas.append((entrada, salida, apellidos, nombres))
-    #Limpiar Duplicados
+    # Limpiar duplicados
     entradas = list(set(entradas))
-
-    #Imprimir Lista
-    for entrada, salida, apellidos, nombres in sorted(entradas, key=lambda x: x[0]):
-        print(f"{entrada} - {salida} - {apellidos} {nombres}")
-        Self.append([f"{apellidos}, {nombres}", f"{entrada}-{salida}"])
-
-    return Self
     
+    # Ordenar por la hora de entrada
+    entradas_ordenadas = sorted(entradas, key=lambda x: x[0])
+    
+    # Formatear la lista para retornar
+    return [[f"{apellidos}, {nombres}", f"{entrada}-{salida}"] for entrada, salida, apellidos, nombres in entradas_ordenadas]
 
+def imprimir_entradas(entradas):
+    print("\nOrden de Entradas:")
+    for entrada, salida, apellidos, nombres in entradas:
+        print(f"{entrada} - {salida} - {apellidos} {nombres}")
+
+def get_self_exportados(horarios, diaI):
+    horarios_dia = obtener_horarios_por_dia(horarios, diaI, "Self Checkout")
+    entradas = procesar_registros(horarios_dia)
+    return entradas
 
 def main():
     archivo_horarios = "horario.txt"
     horarios = cargar_horarios(archivo_horarios)
-    
-    dias = ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"]
-    print("\nSeleccionar Día:")
-    for i, dia in enumerate(dias, 1):
-        print(f"{i}. {dia.capitalize()}")
-    dia_opcion = int(input("Ingrese el número de opción: ")) - 1
-    dia = dias[dia_opcion]        
-    horarios_dia = obtener_horarios_por_dia(horarios, dia, "Self Checkout")
-    ASelf = printSelf(horarios_dia)
-    for e in ASelf:
-        print(e)
+    diaI = dia_menu()
+
+    horarios_dia = obtener_horarios_por_dia(horarios, diaI, "Self Checkout")
+    entradas = procesar_registros(horarios_dia)
+    imprimir_entradas(entradas)
 
 if __name__ == "__main__":
     main()
