@@ -409,30 +409,27 @@ def EliminarPrimeraHoja():
 
 
 
+if (__name__ == '__main__'):
+    archivo_horarios = "horario.txt"
+    horarios = cargar_horarios(archivo_horarios)
+    dias = ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"]
+    tipos_personal = ["Cajer@", "RS", "Self Checkout", "Ecommerce", "Supervisor(@)"]  
 
+    # TODO: Adaptar el upperbound de Entrada y Salida según horarios_dia
+    Entradas = [[["" for _ in range(2)] for _ in range(8)] for _ in range(73)]
+    Salidas = [[["" for _ in range(2)] for _ in range(8)] for _ in range(73)]
+    wb = openpyxl.Workbook()
+    for dia in dias:
+        for tipoPersonal in tipos_personal:
+            #tipo_personal = tipos_personal[tipoPersonal]
+            horarios_dia = obtener_horarios_por_dia(horarios, dia, tipoPersonal)
+            print(f"----- {tipoPersonal} -----")
+            ESaMEMORIA(horarios_dia, tipoPersonal)
+        crearHojaXDia(wb, Entradas, Salidas, dia)
+        Entradas = [[["" for _ in range(2)] for _ in range(9)] for _ in range(73)]
+        Salidas = [[["" for _ in range(2)] for _ in range(9)] for _ in range(73)]
 
-
-
-archivo_horarios = "horario.txt"
-horarios = cargar_horarios(archivo_horarios)
-dias = ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"]
-tipos_personal = ["Cajer@", "RS", "Self Checkout", "Ecommerce", "Supervisor(@)"]  
-
-# TODO: Adaptar el upperbound de Entrada y Salida según horarios_dia
-Entradas = [[["" for _ in range(2)] for _ in range(8)] for _ in range(73)]
-Salidas = [[["" for _ in range(2)] for _ in range(8)] for _ in range(73)]
-wb = openpyxl.Workbook()
-for dia in dias:
-    for tipoPersonal in tipos_personal:
-        #tipo_personal = tipos_personal[tipoPersonal]
-        horarios_dia = obtener_horarios_por_dia(horarios, dia, tipoPersonal)
-        print(f"----- {tipoPersonal} -----")
-        ESaMEMORIA(horarios_dia, tipoPersonal)
-    crearHojaXDia(wb, Entradas, Salidas, dia)
-    Entradas = [[["" for _ in range(2)] for _ in range(9)] for _ in range(73)]
-    Salidas = [[["" for _ in range(2)] for _ in range(9)] for _ in range(73)]
-
-# Guardar el archivo Excel
-wb.save(f"ES_Semanal.xlsx")
-EliminarPrimeraHoja()
-print(f"Archivo 'ES_Semanal.xlsx' creado correctamente.")
+    # Guardar el archivo Excel
+    wb.save(f"ES_Semanal.xlsx")
+    EliminarPrimeraHoja()
+    print(f"Archivo 'ES_Semanal.xlsx' creado correctamente.")

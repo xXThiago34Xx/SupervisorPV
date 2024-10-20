@@ -40,6 +40,7 @@ def buscar_cajeros(cajeros, dia, inhabilitados):
 def asignar_cajeros(ubicaciones):
     cajas = {i: [] for i in range(1, 16)}  # Cajas regulares 1-15
     rapidas = {1: [], 2: []}  # Cajas rápidas 1-2
+    
     cajeros_usados = set()  # Para llevar un registro de los cajeros ya asignados
 
     candidatos = []

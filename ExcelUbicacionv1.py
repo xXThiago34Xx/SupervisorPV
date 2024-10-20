@@ -19,17 +19,6 @@ def obtener_posiciones_caja(caja_num):
         fila_base = 49
     elif caja_num == 25:
         fila_base = 52
-        posiciones = [
-            f'B{fila_base}', f'B{fila_base + 1}', f'B{fila_base + 2}' ,  # Nombres en columna B
-            f'F{fila_base}', f'F{fila_base + 1}', f'F{fila_base + 2}'   # Nombres en columna F
-        ]
-        
-        horas_posiciones = [
-            f'C{fila_base}', f'C{fila_base + 1}', f'C{fila_base + 2}',  # Horas en columna C
-            f'G{fila_base}', f'G{fila_base + 1}', f'G{fila_base + 2}'   # Horas en columna G
-        ]
-        
-        return posiciones, horas_posiciones
     else:
         return None  # Cajas fuera del rango
 
@@ -42,6 +31,12 @@ def obtener_posiciones_caja(caja_num):
         f'C{fila_base}', f'C{fila_base + 1}',  # Horas en columna C
         f'G{fila_base}', f'G{fila_base + 1}'   # Horas en columna G
     ]
+
+    if (caja_num == 25):
+        posiciones.insert(2, f'B{fila_base+2}')
+        posiciones.append(f'F{fila_base+2}')
+        horas_posiciones.insert(2, f'C{fila_base+2}')
+        horas_posiciones.append(f'G{fila_base+2}')
     
     return posiciones, horas_posiciones
 
@@ -112,26 +107,26 @@ def asignar_selfs(selfs, hoja):
         cajeros_asignados.append(nombre_completo)
 
 
-# Cargar el archivo Excel y la hoja de trabajo
-archivo_origen = 'Plantilla.xlsx'
-archivo_destino = 'Plantilla_Exportada.xlsx'
+if (__name__ == '__main__'):
+    # Cargar el archivo Excel y la hoja de trabajo
+    archivo_origen = 'Plantilla.xlsx'
+    archivo_destino = 'Plantilla_Exportada.xlsx'
 
-wb = load_workbook(archivo_origen)
-hoja = wb.active
+    wb = load_workbook(archivo_origen)
+    hoja = wb.active
 
+    horarios = cargar_horarios("horario.txt")
+    inhabilitados_indices = inhabilitados_menu(horarios)
+    dia_seleccionado = dia_menu()
 
-horarios = cargar_horarios("horario.txt")
-inhabilitados_indices = inhabilitados_menu(horarios)
-dia_seleccionado = dia_menu()
+    cajeros = get_ubicaciones_exportados(horarios, dia_seleccionado, inhabilitados_indices)
+    selfs = get_self_exportados(horarios, dia_seleccionado)
 
-cajeros = get_ubicaciones_exportados(horarios, dia_seleccionado, inhabilitados_indices)
-selfs = get_self_exportados(horarios, dia_seleccionado)
+    # Llamar a la función para asignar los cajeros
+    asignar_cajeros(cajeros, hoja)
+    asignar_selfs(selfs, hoja)
 
-# Llamar a la función para asignar los cajeros
-asignar_cajeros(cajeros, hoja)
-asignar_selfs(selfs, hoja)
+    # Guardar el nuevo archivo
+    wb.save(archivo_destino)
 
-# Guardar el nuevo archivo
-wb.save(archivo_destino)
-
-print("Asignación completada y archivo guardado como", archivo_destino)
+    print("Asignación completada y archivo guardado como", archivo_destino)
