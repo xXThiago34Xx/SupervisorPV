@@ -152,6 +152,36 @@ def mostrar_cajeros(cajeros):
         if cajero[2] == 'Cajer@':
             print(f"{i + 1}. {cajero[0]} {cajero[1]}")
 
+def eliminar_duplicados(lista):
+    lista = list({(d['apellido'], d['nombre'], d['horaSalida']): d for d in lista}.values())
+    return lista
+
+
+def get_ubicaciones_exportados(cajeros, dia_seleccionado: int, inhabilitados_indices: list):
+    inhabilitados = [cajeros[i][0] for i in inhabilitados_indices]
+
+    dia = f"2024-10-{dia_seleccionado:02d}"
+
+    # Buscar cajeros disponibles y asignarles cajas
+    ubicaciones = buscar_cajeros(cajeros, dia, inhabilitados)
+    cajas, rapidas = asignar_cajeros(ubicaciones)
+    
+    return cajas_list(cajas,rapidas)
+
+def dia_menu():
+    dias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]
+    print("Seleccione un día:")
+    for i, dia in enumerate(dias):
+        print(f"{i + 1}. {dia}")
+    dia_seleccionado = int(input("Ingrese el número del día: "))
+    return dia_seleccionado
+
+def inhabilitados_menu(cajeros):
+    mostrar_cajeros(cajeros)
+    inhabilitados_indices = input("Ingrese los números de los cajeros inhabilitados (separados por comas): ")
+    inhabilitados_indices = [int(i) - 1 for i in inhabilitados_indices.split(",")]
+    return inhabilitados_indices
+
 # Función principal
 def main():
     cajeros = cargar_horarios("horario.txt")
@@ -185,10 +215,5 @@ def main():
         print(e)
 
 
-def eliminar_duplicados(lista):
-    lista = list({(d['apellido'], d['nombre'], d['horaSalida']): d for d in lista}.values())
-    return lista
-
 if __name__ == "__main__":
     main()
-    
