@@ -5,20 +5,22 @@ from getSelfxDia import get_self_exportados
 
 # Función para obtener las posiciones de nombres y horas según el número de caja
 def obtener_posiciones_caja(caja_num):
-    if 1 <= caja_num <= 18:
-        fila_base = 4 + (caja_num - 1) * 2
+    if caja_num == 1:
+        fila_base = 4
+    elif (1 < caja_num <= 18):
+        fila_base = 4 + (caja_num - 1) * 2 + 1
     elif caja_num == 20:
-        fila_base = 41
+        fila_base = 42
     elif caja_num == 21:
-        fila_base = 43
+        fila_base = 44
     elif caja_num == 22:
-        fila_base = 45
+        fila_base = 46
     elif caja_num == 23:
-        fila_base = 47
+        fila_base = 48
     elif caja_num == 24:
-        fila_base = 49
+        fila_base = 50
     elif caja_num == 25:
-        fila_base = 52
+        fila_base = 53
     else:
         return None  # Cajas fuera del rango
 
@@ -32,7 +34,7 @@ def obtener_posiciones_caja(caja_num):
         f'G{fila_base}', f'G{fila_base + 1}'   # Horas en columna G
     ]
 
-    if (caja_num == 25):
+    if (caja_num == 25 or caja_num == 1):
         posiciones.insert(2, f'B{fila_base+2}')
         posiciones.append(f'F{fila_base+2}')
         horas_posiciones.insert(2, f'C{fila_base+2}')
@@ -64,7 +66,7 @@ def asignar_cajeros(cajeros, hoja):
             continue
 
         # Verificar si ya se han asignado 4 cajeros a la caja; si es así, saltar
-        if len(cajeros_asignados[num_caja]) >= 4:
+        if (len(cajeros_asignados[num_caja]) >= 4 and num_caja != 1):
             print(f"Advertencia: Caja {num_caja} ya tiene los 4 cajeros asignados. Saltando.")
             continue
 
