@@ -155,11 +155,22 @@ def cajas_list(cajas, rapidas):
     return glo
 
 # Función para mostrar la lista de cajeros
-def mostrar_cajeros(cajeros):
+def mostrar_cajeros(horarios):
     print("Lista de cajeros:")
-    for i, cajero in enumerate(cajeros):
+    for i, cajero in enumerate(horarios):
         if cajero[2] == 'Cajer@':
             print(f"{i + 1}. {cajero[0]} {cajero[1]}")
+
+def get_cajeros(horarios):
+    cajeros = []
+    for i, cajero in enumerate(horarios):
+        if cajero[2] == 'Cajer@':
+            cajeros.append({
+                "index": i,  # Storing the index starting from 1
+                "apellido": cajero[0],
+                "nombre": cajero[1]
+            })
+    return cajeros
 
 def eliminar_duplicados(lista):
     lista = list({(d['apellido'], d['nombre'], d['horaSalida']): d for d in lista}.values())
@@ -185,21 +196,21 @@ def dia_menu():
     dia_seleccionado = int(input("Ingrese el número del día: "))
     return dia_seleccionado
 
-def inhabilitados_menu(cajeros):
-    mostrar_cajeros(cajeros)
+def inhabilitados_menu(horarios):
+    mostrar_cajeros(horarios)
     inhabilitados_indices = input("Ingrese los números de los cajeros inhabilitados (separados por comas): ")
     inhabilitados_indices = [int(i) - 1 for i in inhabilitados_indices.split(",")]
     return inhabilitados_indices
 
 # Función principal
 def main():
-    cajeros = cargar_horarios("horario.txt")
+    horarios = cargar_horarios("horario.txt")
 
     # Mostrar lista de cajeros y preguntar por los inhabilitados
-    mostrar_cajeros(cajeros)
+    mostrar_cajeros(horarios)
     inhabilitados_indices = input("Ingrese los números de los cajeros inhabilitados (separados por comas): ")
     inhabilitados_indices = [int(i) - 1 for i in inhabilitados_indices.split(",")]
-    inhabilitados = [cajeros[i][0] for i in inhabilitados_indices]
+    inhabilitados = [horarios[i][0] for i in inhabilitados_indices]
 
     # Mostrar menú de días
     dias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]
@@ -211,7 +222,7 @@ def main():
     dia = f"2024-10-{dia_seleccionado + 1:02d}"  # Ajusta el formato de fecha
 
     # Buscar cajeros disponibles y asignarles cajas
-    ubicaciones = buscar_cajeros(cajeros, dia, inhabilitados)
+    ubicaciones = buscar_cajeros(horarios, dia, inhabilitados)
     cajas, rapidas = asignar_cajeros(ubicaciones)
 
     # Imprimir los 
