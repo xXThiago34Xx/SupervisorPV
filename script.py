@@ -42,6 +42,8 @@ def menu():
             run_script('registrarPersonalV1.py')
         elif choice == '12':
             run_script('nick.py')
+        elif choice == '121':
+            run_script('InhabilitadosToggle.py')
         elif choice == '2':
             run_script('limpiarHorario.py')
         elif choice == '3':
