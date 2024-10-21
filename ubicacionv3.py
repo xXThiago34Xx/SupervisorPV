@@ -1,5 +1,4 @@
 import csv
-import random
 from datetime import datetime, timedelta
 
 # Función para cargar los horarios desde el archivo
@@ -58,10 +57,14 @@ def asignar_cajeros(ubicaciones):
                     candidatos.append(ubicacion)
             else:
                 if candidatos:
-                    nuevo_cajero = candidatos[-1].copy()
-                    nuevo_cajero['horaEntrada'] = ultimo_cajero['horaSalida'] - timedelta(minutes=15)
-                    nuevo_cajero['apellido'] = "(T) " + nuevo_cajero['apellido']
-                    candidatos[-1]['horaSalida'] = nuevo_cajero['horaEntrada']
+                    if (ultimo_cajero["horaSalida"]-timedelta(minutes=15) == candidatos[-1]["horaEntrada"]):
+                        nuevo_cajero = candidatos[-1]
+                    else:
+                        nuevo_cajero = candidatos[-1].copy()
+                        nuevo_cajero['horaEntrada'] = ultimo_cajero['horaSalida'] - timedelta(minutes=15)
+                        nuevo_cajero['apellido'] = "(T) " + nuevo_cajero['apellido']
+                        candidatos[-1]['horaSalida'] = nuevo_cajero['horaEntrada']
+
                     cajas[1].append(nuevo_cajero)
                     cajeros_usados.add(f"{nuevo_cajero['apellido']} {nuevo_cajero['nombre']}")
                     candidatos = []
@@ -73,12 +76,14 @@ def asignar_cajeros(ubicaciones):
             if (ubicacion["inhabilitado"]):
                 continue
             if ubicacion['horaSalida'].strftime("%H:%M") == "22:45" and f"{ubicacion['apellido']} {ubicacion['nombre']}" not in cajeros_usados:
-                # Cambiar la hora de entrada y salida de este cajero
-                nuevo_cajero = ubicacion.copy()
-                nuevo_cajero['horaSalida'].replace(hour=22, minute=45)
-                nuevo_cajero['horaEntrada'] = cajas[1][-1]['horaSalida'] - timedelta(minutes=15)
-                nuevo_cajero['apellido'] = "(T) " + nuevo_cajero['apellido']  # Indicar que es el cajero transferido
-                ubicacion['horaSalida'] = nuevo_cajero['horaEntrada']
+                if (cajas[1][-1]['horaSalida'] == ubicacion['horaEntrada'] - timedelta(minutes=15)):
+                    nuevo_cajero = ubicacion
+                else:
+                    nuevo_cajero = ubicacion.copy()
+                    nuevo_cajero['horaSalida'].replace(hour=22, minute=45)
+                    nuevo_cajero['horaEntrada'] = cajas[1][-1]['horaSalida'] - timedelta(minutes=15)
+                    nuevo_cajero['apellido'] = "(T) " + nuevo_cajero['apellido']  # Indicar que es el cajero transferido
+                    ubicacion['horaSalida'] = nuevo_cajero['horaEntrada']
                 cajas[1].append(nuevo_cajero)
                 cajeros_usados.add(f"{nuevo_cajero['apellido']} {nuevo_cajero['nombre']}")
                 break
@@ -94,13 +99,16 @@ def asignar_cajeros(ubicaciones):
     for caja_num in rapidas.keys():
         if len(rapidas[caja_num]) == 0:
             for ubicacion in ubicaciones:
-                print(ubicacion)
+                if (ubicacion["inhabilitado"]):
+                    continue
                 if ubicacion["horaEntrada"] >= datetime.strptime("09:00", "%H:%M") and (len(rapidas[caja_num]) == 0 or rapidas[caja_num][-1]["horaSalida"] <= ubicacion["horaEntrada"]) and f"{ubicacion['apellido']} {ubicacion['nombre']}" not in cajeros_usados:
                     rapidas[caja_num].append(ubicacion)
                     cajeros_usados.add(f"{ubicacion['apellido']} {ubicacion['nombre']}")
 
     # Asignar cajeros a otras cajas
     for ubicacion in sorted(ubicaciones, key=lambda x: x['horaEntrada']):
+        if (ubicacion["inhabilitado"]):
+            continue
         # Revisar otras cajas
         for caja_num in range(2, 16):
             if (len(cajas[caja_num]) == 0 or cajas[caja_num][-1]["horaSalida"] <= ubicacion["horaEntrada"]) and f"{ubicacion['apellido']} {ubicacion['nombre']}" not in cajeros_usados:
