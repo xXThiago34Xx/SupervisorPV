@@ -14,6 +14,7 @@ def menu():
         print("Selecciona una opción:")
         print("1. Registrar Personal")
         print("12. Registrar NICKNAMES de Personal")
+        print("121. Registrar Personas Fijas para Cajas Rapidas")
         print("2. Limpiar Horario")
         print("3. Registrar Horario")
         print("31. Editar Horario")
@@ -28,10 +29,10 @@ def menu():
         print("9. Exportar Excel de Mapa de Personal del Area DIA ESPECIFICO")
         print("10. Exportar Excel de Mapa de Personal del Area SEMANAL")
         print("11. Exportar Excel de Mapa de Personal del Area SEMANAL a PDF")
-        print("13. // EN DESARROLLO // Generar Ubicacion de Cajer@s DIA ESPECIFICO")
-        print("14. // EN DESARROLLO // Generar Ubicacion de Cajer@s SEMANAL")
-        print("15. // EN DESARROLLO // Generar Ubicacion de Cajer@s SEMANAL a PDF")
-        print("19. Generar PDF SEMANAL (Juntar todos los documentos Semanales en un PDF) (Ejecutar 7, 8, 10, 11 y 15)")
+        print("13. Generar Ubicacion de Cajer@s DIA ESPECIFICO")
+        print("14. Generar Ubicacion de Cajer@s SEMANAL EN EXCEL")
+        print("15. Generar Ubicacion de Cajer@s SEMANAL a PDF")
+        print("19. Generar PDF SEMANAL (Juntar todos los documentos Semanales en un PDF) (Ejecutar 7, 8, 10, 11, 14y 15)")
         print("20. Tools")
         print("0. Salir")
         
@@ -69,11 +70,21 @@ def menu():
             run_script('ESSemanalV4.py')
         elif choice == '11':
             run_script('ExportarESaPDF.py')
+        elif choice == '13':
+            run_script('ExcelUbicacionV1.py')
+        elif choice == '14':
+            run_script('ExcelUbicacionSemanal.py')
+            run_script('ponerFecha.py')
+        elif choice == '15':
+            run_script('ExportarUbicacionSemanalPDF.py')
         elif choice == '19':
             run_script('GenerarHojasSemanaV5.py')
             run_script('ExportarImprimibleV6.py')
             run_script('ESSemanalV4.py')
             run_script('ExportarESaPDF.py')
+            run_script('ExcelUbicacionSemanal.py')
+            run_script('ponerFechaV1.py')
+            run_script('ExportarUbicacionSemanalPDF.py')
             run_script('mergerV1.py')
             op = input("Imprimir? : ")
             if op == "1":
@@ -94,6 +105,7 @@ def run_script(script_name):
         os.system(f'python {script_name}')
     else:
         print(f"El archivo {script_name} no se encuentra.")
+        input()
     #input("Presiona Enter para continuar...")  # Wait for user input before returning to the menu
     clear_screen()  # Clear the screen before displaying the menu again
 
