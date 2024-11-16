@@ -40,6 +40,8 @@ def asignar_cajeros(ubicaciones):
     if (ubicaciones == []):
         return {}, {}
 
+    ubicaciones = sorted(ubicaciones, key=lambda x: x['horaEntrada'])
+
     cajas = {i: [] for i in range(1, 16)}  # Cajas regulares 1-15
     rapidas = {1: [], 2: []}  # Cajas rápidas 1-2
     
@@ -47,7 +49,7 @@ def asignar_cajeros(ubicaciones):
 
     candidatos = []
     # Asignar cajeros a la Caja Regular 1 primero
-    for ubicacion in sorted(ubicaciones, key=lambda x: x['horaEntrada']):
+    for ubicacion in ubicaciones:
         if (ubicacion["inhabilitado"]):
             continue
         # Asignar a la Caja Regular 1
@@ -97,7 +99,7 @@ def asignar_cajeros(ubicaciones):
             if datetime.strptime(ubicacion["horaEntrada"].strftime("%H:%M"), "%H:%M") >= datetime.strptime("09:00", "%H:%M") and (len(rapidas[caja_num]) == 0 or rapidas[caja_num][-1]["horaSalida"] <= ubicacion["horaEntrada"]) and f"{ubicacion['apellido']} {ubicacion['nombre']}" not in cajeros_usados:
                 rapidas[caja_num].append(ubicacion)
                 cajeros_usados.add(f"{ubicacion['apellido']} {ubicacion['nombre']}")
-
+    
     # Asignar cajeros no inhabilitados a cajas rápidas
     for caja_num in rapidas.keys():
         if len(rapidas[caja_num]) == 0:
@@ -107,6 +109,17 @@ def asignar_cajeros(ubicaciones):
                 if ubicacion["horaEntrada"] >= datetime.strptime("09:00", "%H:%M") and (len(rapidas[caja_num]) == 0 or rapidas[caja_num][-1]["horaSalida"] <= ubicacion["horaEntrada"]) and f"{ubicacion['apellido']} {ubicacion['nombre']}" not in cajeros_usados:
                     rapidas[caja_num].append(ubicacion)
                     cajeros_usados.add(f"{ubicacion['apellido']} {ubicacion['nombre']}")
+
+    # Buscar el cajero con hora de salida más tardia no asignado
+    cajero_mas_tarde = max(filter(lambda x: f"{x['apellido']} {x['nombre']}" not in cajeros_usados, ubicaciones), key=lambda x: x['horaSalida'])
+    for caja_rapida_num in range(1, len(rapidas) + 1):
+        if (rapidas[caja_rapida_num][-1]["horaSalida"] <= cajero_mas_tarde["horaEntrada"]):
+            rapidas[caja_rapida_num].append(cajero_mas_tarde)
+            cajeros_usados.add(f"{cajero_mas_tarde['apellido']} {cajero_mas_tarde['nombre']}")
+            break
+    else:
+        # Si no hay cajas rápidas disponibles, crear una nueva
+        rapidas[len(rapidas) + 1] = [cajero_mas_tarde]
 
     # Asignar cajeros a otras cajas
     for ubicacion in sorted(ubicaciones, key=lambda x: x['horaEntrada']):
