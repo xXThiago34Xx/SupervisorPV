@@ -37,6 +37,9 @@ def buscar_cajeros(cajeros, dia, inhabilitados):
 
 # Función para asignar cajeros a las cajas
 def asignar_cajeros(ubicaciones):
+    if (ubicaciones == []):
+        return {}, {}
+
     cajas = {i: [] for i in range(1, 16)}  # Cajas regulares 1-15
     rapidas = {1: [], 2: []}  # Cajas rápidas 1-2
     
