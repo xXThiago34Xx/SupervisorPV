@@ -364,7 +364,7 @@ def Empilar(arreglo, fila, valor1, valor2):
             return
     
     # Si no se encuentra una posición vacía, levantar una excepción
-    raise Exception("No hay espacio disponible en la fila especificada.")
+    #raise Exception("No hay espacio disponible en la fila especificada.")
 
 def getNHora(hora_str):
     # Convertir el string de hora a una lista con horas y minutos
